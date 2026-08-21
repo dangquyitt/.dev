@@ -115,5 +115,5 @@ return {
                 map({ 'o', 'x' }, 'ih', gitsigns.select_hunk)
             end
         }
-    },
+    }
 }
