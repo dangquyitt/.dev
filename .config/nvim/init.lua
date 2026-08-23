@@ -84,3 +84,8 @@ vim.pack.add({
 	"https://github.com/rafamadriz/friendly-snippets",
 })
 require("blink.cmp").setup()
+
+vim.pack.add({
+	"https://github.com/stevearc/oil.nvim",
+})
+require("oil").setup()
