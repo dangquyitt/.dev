@@ -1,5 +1,21 @@
-vim.g.mapleader = " "
+-- Line numbers
 vim.opt.number = true
+vim.opt.relativenumber = true
+
+-- Indentation
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.expandtab = true
+
+-- Search
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+
+-- Keep sign column visible
+vim.opt.signcolumn = "yes"
+
+-- Persistent undo
+vim.opt.undofile = true
 
 vim.pack.add({ { src = "https://github.com/catppuccin/nvim", name = "catppuccin" } })
 require("catppuccin").setup({
@@ -62,3 +78,9 @@ require("conform").setup({
 		lsp_format = "fallback",
 	},
 })
+
+vim.pack.add({
+	"https://github.com/saghen/blink.cmp",
+	"https://github.com/rafamadriz/friendly-snippets",
+})
+require("blink.cmp").setup()
