@@ -1,3 +1,5 @@
+vim.g.mapleader = " "
+
 -- Line numbers
 vim.opt.number = true
 vim.opt.relativenumber = true
@@ -7,15 +9,19 @@ vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 
+vim.opt.cursorline = true
 -- Search
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
+vim.opt.termguicolors = true
 
 -- Keep sign column visible
 vim.opt.signcolumn = "yes"
 
 -- Persistent undo
 vim.opt.undofile = true
+
+vim.opt.clipboard = "unnamedplus"
 
 vim.pack.add({ { src = "https://github.com/catppuccin/nvim", name = "catppuccin" } })
 require("catppuccin").setup({
@@ -44,6 +50,71 @@ require("gitsigns").setup({
 		changedelete = { text = "~" },
 		untracked = { text = "┆" },
 	},
+	on_attach = function(bufnr)
+		local gitsigns = require("gitsigns")
+
+		local function map(mode, l, r, opts)
+			opts = opts or {}
+			opts.buffer = bufnr
+			vim.keymap.set(mode, l, r, opts)
+		end
+
+		-- Navigation
+		map("n", "]c", function()
+			if vim.wo.diff then
+				vim.cmd.normal({ "]c", bang = true })
+			else
+				gitsigns.nav_hunk("next")
+			end
+		end)
+
+		map("n", "[c", function()
+			if vim.wo.diff then
+				vim.cmd.normal({ "[c", bang = true })
+			else
+				gitsigns.nav_hunk("prev")
+			end
+		end)
+
+		-- Actions
+		map("n", "<leader>hs", gitsigns.stage_hunk)
+		map("n", "<leader>hr", gitsigns.reset_hunk)
+
+		map("v", "<leader>hs", function()
+			gitsigns.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
+		end)
+
+		map("v", "<leader>hr", function()
+			gitsigns.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
+		end)
+
+		map("n", "<leader>hS", gitsigns.stage_buffer)
+		map("n", "<leader>hR", gitsigns.reset_buffer)
+		map("n", "<leader>hp", gitsigns.preview_hunk)
+		map("n", "<leader>hi", gitsigns.preview_hunk_inline)
+
+		map("n", "<leader>hb", function()
+			gitsigns.blame_line({ full = true })
+		end)
+
+		map("n", "<leader>hd", gitsigns.diffthis)
+
+		map("n", "<leader>hD", function()
+			gitsigns.diffthis("~")
+		end)
+
+		map("n", "<leader>hQ", function()
+			gitsigns.setqflist("all")
+		end)
+		map("n", "<leader>hq", gitsigns.setqflist)
+
+		-- Toggles
+		map("n", "<leader>tb", gitsigns.toggle_current_line_blame)
+		map("n", "<leader>tw", gitsigns.toggle_word_diff)
+
+		-- Text object
+		map({ "o", "x" }, "ih", gitsigns.select_hunk)
+	end,
 })
 
 vim.pack.add({ "https://github.com/nvim-treesitter/nvim-treesitter" })
@@ -86,9 +157,23 @@ vim.pack.add({
 require("blink.cmp").setup()
 
 vim.pack.add({
-	"https://github.com/stevearc/oil.nvim",
+	{
+		src = "https://github.com/nvim-neo-tree/neo-tree.nvim",
+		version = vim.version.range("3"),
+	},
+	"https://github.com/nvim-lua/plenary.nvim",
+	"https://github.com/MunifTanjim/nui.nvim",
+	"https://github.com/nvim-tree/nvim-web-devicons",
 })
-require("oil").setup()
+require("neo-tree").setup({})
+vim.keymap.set("n", "<leader>e", "<Cmd>Neotree<CR>")
 
 vim.pack.add({ { src = "https://github.com/kdheepak/lazygit.nvim" } })
 vim.keymap.set("n", "<Leader>g", "<cmd>LazyGit<CR>", { desc = "Open LazyGit" })
+
+vim.pack.add({
+	"https://github.com/nvim-treesitter/nvim-treesitter",
+	"https://github.com/nvim-tree/nvim-web-devicons",
+	"https://github.com/MeanderingProgrammer/render-markdown.nvim",
+})
+require("render-markdown").setup({})
