@@ -37,16 +37,25 @@ vim.opt.undofile = true
 -- System clipboard
 vim.opt.clipboard = "unnamedplus"
 
+-- Catppuccin: editor color theme
 vim.pack.add({ { src = "https://github.com/catppuccin/nvim", name = "catppuccin" } })
 require("catppuccin").setup({
 	flavour = "macchiato", -- latte, frappe, macchiato, mocha
 })
 vim.cmd.colorscheme("catppuccin-nvim")
 
+-- Telescope: search files, text, buffers and help
 vim.pack.add({
 	"https://github.com/nvim-lua/plenary.nvim",
 	"https://github.com/nvim-telescope/telescope.nvim",
 	"https://github.com/nvim-telescope/telescope-fzf-native.nvim",
+})
+require("telescope").setup({
+	pickers = {
+		find_files = {
+			hidden = true,
+		},
+	},
 })
 local builtin = require("telescope.builtin")
 vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Telescope find files" })
@@ -54,6 +63,7 @@ vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Telescope live gr
 vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "Telescope buffers" })
 vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Telescope help tags" })
 
+-- Gitsigns: Git change markers, hunk actions and blame
 vim.pack.add({ "https://github.com/lewis6991/gitsigns.nvim" })
 require("gitsigns").setup({
 	signs = {
@@ -131,6 +141,7 @@ require("gitsigns").setup({
 	end,
 })
 
+-- Treesitter: install syntax parsers and enable highlighting for Go
 vim.pack.add({ "https://github.com/nvim-treesitter/nvim-treesitter" })
 require("nvim-treesitter").install({ "rust", "javascript", "go" })
 vim.api.nvim_create_autocmd("FileType", {
@@ -140,7 +151,9 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
+-- LSPConfig: language server configurations (currently gopls)
 vim.pack.add({ { src = "https://github.com/neovim/nvim-lspconfig" } })
+-- Mason: install and manage language servers and developer tools
 vim.pack.add({ "https://github.com/mason-org/mason.nvim" })
 require("mason").setup()
 local servers = {
@@ -151,25 +164,26 @@ for name, opts in pairs(servers) do
 	vim.lsp.enable(name)
 end
 
+-- Conform: manual formatting with <leader>fm, using LSP as a fallback
 vim.pack.add({ "https://github.com/stevearc/conform.nvim" })
 require("conform").setup({
 	formatters_by_ft = {
 		lua = { "stylua" },
 		go = { "gofmt" },
 	},
-
-	format_on_save = {
-		timeout_ms = 500,
-		lsp_format = "fallback",
-	},
 })
+vim.keymap.set("n", "<leader>fm", function()
+	require("conform").format({ async = true, lsp_format = "fallback" })
+end, { desc = "Format buffer" })
 
+-- Blink: completion menu with snippet support
 vim.pack.add({
 	"https://github.com/saghen/blink.cmp",
 	"https://github.com/rafamadriz/friendly-snippets",
 })
 require("blink.cmp").setup()
 
+-- Neo-tree: file explorer opened with <leader>e
 vim.pack.add({
 	{
 		src = "https://github.com/nvim-neo-tree/neo-tree.nvim",
@@ -179,12 +193,20 @@ vim.pack.add({
 	"https://github.com/MunifTanjim/nui.nvim",
 	"https://github.com/nvim-tree/nvim-web-devicons",
 })
-require("neo-tree").setup({})
+require("neo-tree").setup({
+	filesystem = {
+		filtered_items = {
+			hide_dotfiles = false,
+		},
+	},
+})
 vim.keymap.set("n", "<leader>e", "<Cmd>Neotree<CR>")
 
+-- LazyGit: open the Git terminal interface with <leader>g
 vim.pack.add({ { src = "https://github.com/kdheepak/lazygit.nvim" } })
 vim.keymap.set("n", "<Leader>g", "<cmd>LazyGit<CR>", { desc = "Open LazyGit" })
 
+-- Render Markdown: display formatted Markdown inside the editor
 vim.pack.add({
 	"https://github.com/nvim-treesitter/nvim-treesitter",
 	"https://github.com/nvim-tree/nvim-web-devicons",
