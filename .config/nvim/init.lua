@@ -1,26 +1,40 @@
+-- Leader key
 vim.g.mapleader = " "
 
--- Line numbers
+-- Appearance
 vim.opt.number = true
 vim.opt.relativenumber = true
+vim.opt.cursorline = true
+vim.opt.termguicolors = true
+vim.opt.signcolumn = "yes"
+vim.opt.wrap = false
 
 -- Indentation
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 
-vim.opt.cursorline = true
--- Search
+-- Whitespace display
+vim.opt.list = true
+vim.opt.listchars:append({ tab = "» ", trail = "·", nbsp = "␣" })
+
+-- Scrolling: keep context around the cursor
+vim.opt.scrolloff = 8
+vim.opt.sidescrolloff = 8
+
+-- Search and substitution preview
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
-vim.opt.termguicolors = true
+vim.opt.inccommand = "split"
 
--- Keep sign column visible
-vim.opt.signcolumn = "yes"
+-- Window splits: open right and below
+vim.opt.splitright = true
+vim.opt.splitbelow = true
 
 -- Persistent undo
 vim.opt.undofile = true
 
+-- System clipboard
 vim.opt.clipboard = "unnamedplus"
 
 vim.pack.add({ { src = "https://github.com/catppuccin/nvim", name = "catppuccin" } })
