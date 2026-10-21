@@ -173,7 +173,7 @@ for name, opts in pairs(servers) do
 	vim.lsp.enable(name)
 end
 
--- Conform: manual formatting with <leader>fm, using LSP as a fallback
+-- Conform: manual formatting with <leader>cf, using LSP as a fallback
 vim.pack.add({ "https://github.com/stevearc/conform.nvim" })
 require("conform").setup({
 	formatters_by_ft = {
@@ -181,7 +181,7 @@ require("conform").setup({
 		go = { "gofmt" },
 	},
 })
-vim.keymap.set("n", "<leader>fm", function()
+vim.keymap.set("n", "<leader>cf", function()
 	require("conform").format({ async = true, lsp_format = "fallback" })
 end, { desc = "Format buffer" })
 
