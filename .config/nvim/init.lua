@@ -160,6 +160,7 @@ vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { desc = "Goto Declaration" }
 vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover" })
 vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename" })
 vim.keymap.set({ "n", "x" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "Code Action" })
+vim.keymap.set("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Code Diagnostics" })
 
 -- Mason: install and manage language servers and developer tools
 vim.pack.add({ "https://github.com/mason-org/mason.nvim" })
@@ -185,12 +186,24 @@ vim.keymap.set("n", "<leader>cf", function()
 	require("conform").format({ async = true, lsp_format = "fallback" })
 end, { desc = "Format buffer" })
 
--- Blink: completion menu with snippet support
+-- Blink: completion menu
 vim.pack.add({
-	"https://github.com/saghen/blink.cmp",
 	"https://github.com/rafamadriz/friendly-snippets",
+	{ src = "https://github.com/saghen/blink.cmp", version = vim.version.range("1.*") },
 })
-require("blink.cmp").setup()
+require("blink.cmp").setup({
+	keymap = { preset = "default" },
+	appearance = {
+		nerd_font_variant = "mono",
+	},
+	completion = {
+		documentation = { auto_show = false },
+	},
+	sources = {
+		default = { "lsp", "path", "snippets", "buffer" },
+	},
+	fuzzy = { implementation = "prefer_rust_with_warning" },
+})
 
 -- Neo-tree: file explorer opened with <leader>e
 vim.pack.add({
