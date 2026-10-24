@@ -37,6 +37,17 @@ vim.opt.undofile = true
 -- System clipboard
 vim.opt.clipboard = "unnamedplus"
 
+-- Highlight on yank
+vim.api.nvim_create_autocmd("TextYankPost", {
+  desc = "Highlight on yank",
+  callback = function()
+    vim.highlight.on_yank({
+      higroup = "IncSearch",
+      timeout = 200,
+    })
+  end,
+})
+
 -- Catppuccin: editor color theme
 vim.pack.add({ { src = "https://github.com/catppuccin/nvim", name = "catppuccin" } })
 require("catppuccin").setup({
@@ -74,6 +85,16 @@ require("gitsigns").setup({
 		changedelete = { text = "~" },
 		untracked = { text = "┆" },
 	},
+	current_line_blame = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
+	current_line_blame_opts = {
+		virt_text = true,
+		virt_text_pos = "eol", -- 'eol' | 'overlay' | 'right_align'
+		delay = 1000,
+		ignore_whitespace = false,
+		virt_text_priority = 100,
+		use_focus = true,
+	},
+	current_line_blame_formatter = "<author>, <author_time:%R> - <summary>",
 	on_attach = function(bufnr)
 		local gitsigns = require("gitsigns")
 
