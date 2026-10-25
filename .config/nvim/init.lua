@@ -48,7 +48,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	end,
 })
 
--- Move selected lines 
+-- Move selected lines
 vim.keymap.set("x", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("x", "K", ":m '<-2<CR>gv=gv")
 
@@ -277,3 +277,10 @@ vim.pack.add({
 	"https://github.com/MeanderingProgrammer/render-markdown.nvim",
 })
 require("render-markdown").setup({})
+
+-- Lualine: statusline
+vim.pack.add({
+	"https://github.com/nvim-tree/nvim-web-devicons",
+	"https://github.com/nvim-lualine/lualine.nvim",
+})
+require("lualine").setup()
