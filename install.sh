@@ -1,28 +1,31 @@
 #!/usr/bin/env bash
-# Symlink the configs listed in CONFIGS from this repo's .config/ into ~/.config/.
+# Symlink the configs listed in CONFIGS from this repo's .config/ into ~/.config/,
+# and the files listed in HOME_LINKS into $HOME.
 # Existing configs are moved to <name>.bak.<timestamp> before linking.
 set -euo pipefail
 
-CONFIGS=(ghostty mise nvim)
+CONFIGS=(ghostty mise nvim tmux)
+
+# "<path in repo>:<path under $HOME>"
+HOME_LINKS=(
+  ".config/zsh/zshrc:.zshrc"
+)
 
 DOTFILES="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 TIMESTAMP="$(date +%Y%m%d%H%M%S)"
 
-mkdir -p "$CONFIG_HOME"
+link() {
+  local src="$1" dest="$2"
 
-for name in "${CONFIGS[@]}"; do
-  src="$DOTFILES/.config/$name"
-  dest="$CONFIG_HOME/$name"
-
-  if [ ! -d "$src" ]; then
+  if [ ! -e "$src" ]; then
     echo "missing $src" >&2
     exit 1
   fi
 
   if [ -L "$dest" ] && [ "$(readlink "$dest")" = "$src" ]; then
     echo "ok      $dest"
-    continue
+    return
   fi
 
   if [ -e "$dest" ] || [ -L "$dest" ]; then
@@ -32,4 +35,14 @@ for name in "${CONFIGS[@]}"; do
 
   ln -s "$src" "$dest"
   echo "link    $dest -> $src"
+}
+
+mkdir -p "$CONFIG_HOME"
+
+for name in "${CONFIGS[@]}"; do
+  link "$DOTFILES/.config/$name" "$CONFIG_HOME/$name"
+done
+
+for pair in "${HOME_LINKS[@]}"; do
+  link "$DOTFILES/${pair%%:*}" "$HOME/${pair#*:}"
 done
