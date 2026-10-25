@@ -9,6 +9,7 @@ CONFIGS=(ghostty mise nvim tmux)
 # "<path in repo>:<path under $HOME>"
 HOME_LINKS=(
   ".config/zsh/zshrc:.zshrc"
+  ".config/starship/starship.toml:.config/starship.toml"
 )
 
 DOTFILES="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
