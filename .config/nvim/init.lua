@@ -246,25 +246,17 @@ require("blink.cmp").setup({
 	fuzzy = { implementation = "prefer_rust_with_warning" },
 })
 
--- Neo-tree: file explorer opened with <leader>e
-vim.pack.add({
-	{
-		src = "https://github.com/nvim-neo-tree/neo-tree.nvim",
-		version = vim.version.range("3"),
+-- Oil: file explorer
+vim.pack.add({ "https://github.com/stevearc/oil.nvim" })
+require("oil").setup({
+	view_options = {
+		-- Show files and directories that start with "."
+		show_hidden = true,
+		-- This function
 	},
-	"https://github.com/nvim-lua/plenary.nvim",
-	"https://github.com/MunifTanjim/nui.nvim",
-	"https://github.com/nvim-tree/nvim-web-devicons",
+    watch_for_changes = true,
 })
-require("neo-tree").setup({
-	filesystem = {
-		use_libuv_file_watcher = true,
-		filtered_items = {
-			hide_dotfiles = false,
-		},
-	},
-})
-vim.keymap.set("n", "<leader>e", "<Cmd>Neotree<CR>")
+vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 
 -- LazyGit: open the Git terminal interface with <leader>g
 vim.pack.add({ { src = "https://github.com/kdheepak/lazygit.nvim" } })
