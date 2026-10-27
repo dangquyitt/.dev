@@ -221,6 +221,7 @@ require("conform").setup({
 	formatters_by_ft = {
 		lua = { "stylua" },
 		go = { "gofmt" },
+		json = { "jq" },
 	},
 })
 vim.keymap.set("n", "<leader>cf", function()
@@ -254,7 +255,7 @@ require("oil").setup({
 		show_hidden = true,
 		-- This function
 	},
-    watch_for_changes = true,
+	watch_for_changes = true,
 })
 vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 
