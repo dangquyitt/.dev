@@ -250,6 +250,11 @@ require("blink.cmp").setup({
 -- Oil: file explorer
 vim.pack.add({ "https://github.com/stevearc/oil.nvim" })
 require("oil").setup({
+	keymaps = {
+		-- Free Ctrl-h/l for vim-tmux-navigator
+		["<C-h>"] = false,
+		["<C-l>"] = false,
+	},
 	view_options = {
 		-- Show files and directories that start with "."
 		show_hidden = true,
@@ -277,3 +282,6 @@ vim.pack.add({
 	"https://github.com/nvim-lualine/lualine.nvim",
 })
 require("lualine").setup()
+
+-- Vim Tmux Navigator: Ctrl-h/j/k/l to move between nvim splits and tmux panes
+vim.pack.add({ "https://github.com/christoomey/vim-tmux-navigator" })
