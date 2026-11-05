@@ -170,7 +170,7 @@ require("gitsigns").setup({
 vim.pack.add({ "https://github.com/nvim-treesitter/nvim-treesitter" })
 require("nvim-treesitter").install({ "rust", "javascript", "go" })
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = { "go" },
+	pattern = { "go", "rust" },
 	callback = function()
 		vim.treesitter.start()
 	end,
@@ -212,6 +212,13 @@ require("mason").setup()
 
 local servers = {
 	gopls = {},
+	rust_analyzer = {
+		settings = {
+			["rust-analyzer"] = {
+				check = { command = "clippy" },
+			},
+		},
+	},
 }
 for name, opts in pairs(servers) do
 	vim.lsp.config(name, opts)
@@ -224,6 +231,7 @@ require("conform").setup({
 	formatters_by_ft = {
 		lua = { "stylua" },
 		go = { "gofmt" },
+		rust = { "rustfmt" },
 		json = { "jq" },
 	},
 })
