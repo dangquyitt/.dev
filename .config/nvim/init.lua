@@ -211,7 +211,13 @@ vim.pack.add({ "https://github.com/mason-org/mason.nvim" })
 require("mason").setup()
 
 local servers = {
-	gopls = {},
+	gopls = {
+		settings = {
+			gopls = {
+				staticcheck = true,
+			},
+		},
+	},
 	rust_analyzer = {
 		settings = {
 			["rust-analyzer"] = {
