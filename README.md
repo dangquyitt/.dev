@@ -1,6 +1,6 @@
 # .dev
 
-Dotfiles for macOS and Linux: Neovim, Ghostty, mise, tmux, zsh, Starship.
+Dotfiles for macOS and Linux: Neovim, Ghostty, mise, tmux, zsh.
 
 ## Install
 
@@ -9,7 +9,7 @@ git clone https://github.com/dangquyitt/.dev.git ~/.dev && ~/.dev/install.sh
 ```
 
 The script symlinks `ghostty`, `mise`, `nvim` and `tmux` from the repo's `.config/` into `~/.config/`
-(or `$XDG_CONFIG_HOME` if set), `zshrc` into `~/.zshrc`, and `starship.toml` into `~/.config/starship.toml`:
+(or `$XDG_CONFIG_HOME` if set), and `zshrc` into `~/.zshrc`:
 
 ```
 ~/.config/nvim    -> ~/.dev/.config/nvim
@@ -17,7 +17,6 @@ The script symlinks `ghostty`, `mise`, `nvim` and `tmux` from the repo's `.confi
 ~/.config/mise    -> ~/.dev/.config/mise
 ~/.config/tmux    -> ~/.dev/.config/tmux
 ~/.zshrc          -> ~/.dev/.config/zsh/zshrc
-~/.config/starship.toml -> ~/.dev/.config/starship/starship.toml
 ```
 
 - Existing configs are renamed to `<name>.bak.<timestamp>` before linking, never deleted.
@@ -32,12 +31,12 @@ The script symlinks `ghostty`, `mise`, `nvim` and `tmux` from the repo's `.confi
 cd ~/.dev && git pull
 ```
 
-Since `~/.config/*`, `~/.zshrc` and `~/.config/starship.toml` point straight into the repo, every config edit lives in the repo — just commit and push.
+Since `~/.config/*` and `~/.zshrc` point straight into the repo, every config edit lives in the repo — just commit and push.
 
 ## Uninstall
 
 ```sh
-rm ~/.config/nvim ~/.config/ghostty ~/.config/mise ~/.config/tmux ~/.zshrc ~/.config/starship.toml
+rm ~/.config/nvim ~/.config/ghostty ~/.config/mise ~/.config/tmux ~/.zshrc
 ```
 
 Then rename the `.bak.*` backups back if you want your old configs restored.
