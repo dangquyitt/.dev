@@ -203,6 +203,9 @@ vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename" })
 vim.keymap.set({ "n", "x" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "Code Action" })
 vim.keymap.set("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Code Diagnostics" })
 
+-- Diagnostics: show messages at the end of the line
+vim.diagnostic.config({ virtual_text = true })
+
 -- Mason: install and manage language servers and developer tools
 vim.pack.add({ "https://github.com/mason-org/mason.nvim" })
 require("mason").setup()
