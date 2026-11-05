@@ -68,10 +68,11 @@ vim.pack.add({
 require("telescope").setup({
 	pickers = {
 		find_files = {
-			hidden = true,
+			find_command = { "rg", "--files", "--hidden", "--glob", "!**/.git/*" },
 		},
 	},
 })
+require("telescope").load_extension("fzf")
 local builtin = require("telescope.builtin")
 vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Telescope find files" })
 vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Telescope live grep" })
@@ -194,13 +195,9 @@ require("treesitter-context").setup({
 
 -- LSPConfig: language server configurations (currently gopls)
 vim.pack.add({ { src = "https://github.com/neovim/nvim-lspconfig" } })
+-- Other LSP keymaps use Neovim defaults: grr, gri, grt, grn, gra, gO, K
 vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Goto Definition" })
-vim.keymap.set("n", "gr", vim.lsp.buf.references, { desc = "References" })
-vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { desc = "Goto Implementation" })
 vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { desc = "Goto Declaration" })
-vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover" })
-vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename" })
-vim.keymap.set({ "n", "x" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "Code Action" })
 vim.keymap.set("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Code Diagnostics" })
 
 -- Diagnostics: show messages at the end of the line
