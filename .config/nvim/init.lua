@@ -56,6 +56,7 @@ vim.keymap.set("x", "K", ":m '<-2<CR>gv=gv")
 vim.pack.add({ { src = "https://github.com/catppuccin/nvim", name = "catppuccin" } })
 require("catppuccin").setup({
 	flavour = "macchiato", -- latte, frappe, macchiato, mocha
+	transparent_background = true,
 })
 vim.cmd.colorscheme("catppuccin-nvim")
 
