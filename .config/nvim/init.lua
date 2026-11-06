@@ -1,3 +1,5 @@
+-- [[ Options ]]
+
 -- Leader key
 vim.g.mapleader = " "
 
@@ -37,6 +39,8 @@ vim.opt.undofile = true
 -- System clipboard
 vim.opt.clipboard = "unnamedplus"
 
+-- [[ Keymaps & autocommands ]]
+
 -- Highlight on yank
 vim.api.nvim_create_autocmd("TextYankPost", {
 	desc = "Highlight on yank",
@@ -51,6 +55,8 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 -- Move selected lines
 vim.keymap.set("x", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("x", "K", ":m '<-2<CR>gv=gv")
+
+-- [[ Plugins ]]
 
 -- Catppuccin: editor color theme
 vim.pack.add({ { src = "https://github.com/catppuccin/nvim", name = "catppuccin" } })
@@ -194,6 +200,8 @@ require("treesitter-context").setup({
 	on_attach = nil, -- (fun(buf: integer): boolean) return false to disable attaching
 })
 
+-- [[ LSP ]]
+
 -- LSPConfig: language server configurations (currently gopls)
 vim.pack.add({ { src = "https://github.com/neovim/nvim-lspconfig" } })
 -- Other LSP keymaps use Neovim defaults: grr, gri, grt, grn, gra, gO, K
@@ -229,6 +237,15 @@ for name, opts in pairs(servers) do
 	vim.lsp.enable(name)
 end
 
+-- Mason LSPConfig: auto-install the servers above
+vim.pack.add({ "https://github.com/mason-org/mason-lspconfig.nvim" })
+require("mason-lspconfig").setup({
+	ensure_installed = vim.tbl_keys(servers),
+	automatic_enable = false, -- already enabled above
+})
+
+-- [[ Formatting & completion ]]
+
 -- Conform: manual formatting with <leader>cf, using LSP as a fallback
 vim.pack.add({ "https://github.com/stevearc/conform.nvim" })
 require("conform").setup({
@@ -261,6 +278,8 @@ require("blink.cmp").setup({
 	},
 	fuzzy = { implementation = "prefer_rust_with_warning" },
 })
+
+-- [[ Tools & UI ]]
 
 -- Oil: file explorer
 vim.pack.add({ "https://github.com/stevearc/oil.nvim" })
