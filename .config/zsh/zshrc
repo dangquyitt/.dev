@@ -187,6 +187,7 @@ plugins=(
 )
 
 source $ZSH/oh-my-zsh.sh
+PROMPT="%n@%m $PROMPT"
 
 # User configuration
 
