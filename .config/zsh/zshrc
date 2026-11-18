@@ -218,3 +218,6 @@ PROMPT="%n@%m $PROMPT"
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 eval "$(~/.local/bin/mise activate zsh)"
+
+export EDITOR=nvim
+export VISUAL=nvim
