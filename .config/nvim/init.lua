@@ -176,9 +176,32 @@ require("gitsigns").setup({
 
 -- Treesitter: install syntax parsers and enable highlighting for Go
 vim.pack.add({ "https://github.com/nvim-treesitter/nvim-treesitter" })
-require("nvim-treesitter").install({ "rust", "javascript", "go" })
+require("nvim-treesitter").install({
+	"rust",
+	"javascript",
+	"go",
+	"typescript",
+	"tsx",
+	"html",
+	"css",
+	"json",
+	"yaml",
+	"toml",
+})
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = { "go", "rust" },
+	pattern = {
+		"go",
+		"rust",
+		"javascript",
+		"javascriptreact",
+		"typescript",
+		"typescriptreact",
+		"html",
+		"css",
+		"json",
+		"yaml",
+		"toml",
+	},
 	callback = function()
 		vim.treesitter.start()
 	end,
@@ -231,6 +254,10 @@ local servers = {
 			},
 		},
 	},
+	vtsls = {},
+	eslint = {},
+	yamlls = {},
+	taplo = {},
 }
 for name, opts in pairs(servers) do
 	vim.lsp.config(name, opts)
@@ -251,13 +278,21 @@ vim.pack.add({ "https://github.com/stevearc/conform.nvim" })
 require("conform").setup({
 	formatters_by_ft = {
 		lua = { "stylua" },
-		go = { "gofmt" },
+		go = { "goimports" },
 		rust = { "rustfmt" },
 		json = { "jq" },
+		javascript = { "prettierd" },
+		javascriptreact = { "prettierd" },
+		typescript = { "prettierd" },
+		typescriptreact = { "prettierd" },
+		css = { "prettierd" },
+		html = { "prettierd" },
+		yaml = { "prettierd" },
 	},
+	default_format_opts = { lsp_format = "fallback" },
 })
 vim.keymap.set("n", "<leader>cf", function()
-	require("conform").format({ async = true, lsp_format = "fallback" })
+	require("conform").format({ async = true })
 end, { desc = "Format buffer" })
 
 -- Blink: completion menu
