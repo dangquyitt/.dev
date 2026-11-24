@@ -357,6 +357,11 @@ require("blink.cmp").setup({
 	fuzzy = { implementation = "prefer_rust_with_warning" },
 })
 
+-- Copilot: inline AI suggestions (authenticate with :Copilot setup)
+vim.pack.add({
+	{ src = "https://github.com/github/copilot.vim", version = "release" },
+})
+
 -- [[ Plugins: editing ]]
 
 -- Surround: add, delete and change surrounding brackets, quotes and tags
