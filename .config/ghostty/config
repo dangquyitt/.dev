@@ -1,3 +1,4 @@
 theme = Catppuccin Macchiato
 shell-integration-features = sudo
 keybind = cmd+r=reload_config
+keybind = super+v=paste_from_clipboard
