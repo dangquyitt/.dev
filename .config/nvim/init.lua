@@ -56,7 +56,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 vim.keymap.set("x", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("x", "K", ":m '<-2<CR>gv=gv")
 
--- [[ Plugins ]]
+-- [[ Plugins: theme ]]
 
 -- Catppuccin: editor color theme
 vim.pack.add({ { src = "https://github.com/catppuccin/nvim", name = "catppuccin" } })
@@ -65,6 +65,8 @@ require("catppuccin").setup({
 	transparent_background = true,
 })
 vim.cmd.colorscheme("catppuccin-nvim")
+
+-- [[ Plugins: search & file navigation ]]
 
 -- Telescope: search files, text, buffers and help
 vim.pack.add({
@@ -85,6 +87,25 @@ vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Telescope find f
 vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Telescope live grep" })
 vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "Telescope buffers" })
 vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Telescope help tags" })
+
+-- Oil: file explorer
+vim.pack.add({ "https://github.com/stevearc/oil.nvim" })
+require("oil").setup({
+	keymaps = {
+		-- Free Ctrl-h/l for vim-tmux-navigator
+		["<C-h>"] = false,
+		["<C-l>"] = false,
+	},
+	view_options = {
+		-- Show files and directories that start with "."
+		show_hidden = true,
+		-- This function
+	},
+	watch_for_changes = true,
+})
+vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+
+-- [[ Plugins: Git ]]
 
 -- Gitsigns: Git change markers, hunk actions and blame
 vim.pack.add({ "https://github.com/lewis6991/gitsigns.nvim" })
@@ -174,7 +195,13 @@ require("gitsigns").setup({
 	end,
 })
 
--- Treesitter: install syntax parsers and enable highlighting for Go
+-- LazyGit: open the Git terminal interface with <leader>g
+vim.pack.add({ { src = "https://github.com/kdheepak/lazygit.nvim" } })
+vim.keymap.set("n", "<Leader>g", "<cmd>LazyGit<CR>", { desc = "Open LazyGit" })
+
+-- [[ Plugins: syntax & context ]]
+
+-- Treesitter: install syntax parsers and enable highlighting
 vim.pack.add({ "https://github.com/nvim-treesitter/nvim-treesitter" })
 require("nvim-treesitter").install({
 	"rust",
@@ -223,9 +250,9 @@ require("treesitter-context").setup({
 	on_attach = nil, -- (fun(buf: integer): boolean) return false to disable attaching
 })
 
--- [[ LSP ]]
+-- [[ Plugins: LSP & diagnostics ]]
 
--- LSPConfig: language server configurations (currently gopls)
+-- LSPConfig: language server configurations
 vim.pack.add({ { src = "https://github.com/neovim/nvim-lspconfig" } })
 -- Other LSP keymaps use Neovim defaults: grr, gri, grt, grn, gra, gO, K
 vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Goto Definition" })
@@ -240,6 +267,17 @@ vim.pack.add({ "https://github.com/mason-org/mason.nvim" })
 require("mason").setup()
 
 local servers = {
+	lua_ls = {
+		settings = {
+			Lua = {
+				runtime = { version = "LuaJIT" },
+				workspace = {
+					checkThirdParty = false,
+					library = { vim.env.VIMRUNTIME },
+				},
+			},
+		},
+	},
 	gopls = {
 		settings = {
 			gopls = {
@@ -256,6 +294,9 @@ local servers = {
 	},
 	vtsls = {},
 	eslint = {},
+	html = {},
+	cssls = {},
+	jsonls = {},
 	yamlls = {},
 	taplo = {},
 }
@@ -271,7 +312,7 @@ require("mason-lspconfig").setup({
 	automatic_enable = false, -- already enabled above
 })
 
--- [[ Formatting & completion ]]
+-- [[ Plugins: formatting ]]
 
 -- Conform: manual formatting with <leader>cf, using LSP as a fallback
 vim.pack.add({ "https://github.com/stevearc/conform.nvim" })
@@ -295,6 +336,8 @@ vim.keymap.set("n", "<leader>cf", function()
 	require("conform").format({ async = true })
 end, { desc = "Format buffer" })
 
+-- [[ Plugins: completion & snippets ]]
+
 -- Blink: completion menu
 vim.pack.add({
 	"https://github.com/rafamadriz/friendly-snippets",
@@ -314,28 +357,23 @@ require("blink.cmp").setup({
 	fuzzy = { implementation = "prefer_rust_with_warning" },
 })
 
--- [[ Tools & UI ]]
+-- [[ Plugins: editing ]]
 
--- Oil: file explorer
-vim.pack.add({ "https://github.com/stevearc/oil.nvim" })
-require("oil").setup({
-	keymaps = {
-		-- Free Ctrl-h/l for vim-tmux-navigator
-		["<C-h>"] = false,
-		["<C-l>"] = false,
-	},
-	view_options = {
-		-- Show files and directories that start with "."
-		show_hidden = true,
-		-- This function
-	},
-	watch_for_changes = true,
+-- Surround: add, delete and change surrounding brackets, quotes and tags
+vim.pack.add({
+	{ src = "https://github.com/kylechui/nvim-surround", version = vim.version.range("4.x") },
 })
-vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+require("nvim-surround").setup({})
 
--- LazyGit: open the Git terminal interface with <leader>g
-vim.pack.add({ { src = "https://github.com/kdheepak/lazygit.nvim" } })
-vim.keymap.set("n", "<Leader>g", "<cmd>LazyGit<CR>", { desc = "Open LazyGit" })
+-- Autopairs: automatically close brackets and quotes while typing
+vim.pack.add({ "https://github.com/windwp/nvim-autopairs" })
+require("nvim-autopairs").setup({})
+
+-- Autotag: automatically close and rename HTML/JSX/TSX tag pairs
+vim.pack.add({ "https://github.com/windwp/nvim-ts-autotag" })
+require("nvim-ts-autotag").setup({})
+
+-- [[ Plugins: Markdown rendering ]]
 
 -- Render Markdown: display formatted Markdown inside the editor
 vim.pack.add({
@@ -345,12 +383,16 @@ vim.pack.add({
 })
 require("render-markdown").setup({})
 
+-- [[ Plugins: statusline ]]
+
 -- Lualine: statusline
 vim.pack.add({
 	"https://github.com/nvim-tree/nvim-web-devicons",
 	"https://github.com/nvim-lualine/lualine.nvim",
 })
 require("lualine").setup()
+
+-- [[ Plugins: tmux navigation ]]
 
 -- Vim Tmux Navigator: Ctrl-h/j/k/l to move between nvim splits and tmux panes
 vim.pack.add({ "https://github.com/christoomey/vim-tmux-navigator" })
